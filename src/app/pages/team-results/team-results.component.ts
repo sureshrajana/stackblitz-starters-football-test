@@ -1,18 +1,19 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, shareReplay, takeUntil, zip } from 'rxjs';
-import { FixtureService, SecureStorageService, TeamService } from '../../services';
+import { SecureStorageService } from '../../services/secure-storage/secure-storage.service';
 import { Fixture } from '../../models/fixture.model';
 import { Country, TeamData } from '../../models';
 import { COUNTRY_KEY } from '../../constants';
+import { FixtureService } from '../../services/fixture/fixture.service';
+import { TeamService } from '../../services/team/team.service';
 
 @Component({
   selector: 'app-team-results',
   templateUrl: './team-results.component.html',
-  styleUrls: ['./team-results.component.scss']
+  styleUrls: ['./team-results.component.scss'],
 })
 export class TeamResultsComponent implements OnInit, OnDestroy {
-
   public leagueId!: number;
   public teamId!: number;
   public currentYear!: string;
@@ -31,7 +32,7 @@ export class TeamResultsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.routeActive.params.subscribe(params => {
+    this.routeActive.params.subscribe((params) => {
       this.leagueId = params['leagueId'];
       this.teamId = params['teamId'];
       this.currentYear = params['currentYear'];
@@ -45,26 +46,27 @@ export class TeamResultsComponent implements OnInit, OnDestroy {
   }
 
   goToHome(): void {
-    this.router.navigate(
-      ['/home'], 
-      { queryParams: { leagueId: this.leagueId, currentYear: this.currentYear} }
-    );
+    this.router.navigate(['/home'], {
+      queryParams: { leagueId: this.leagueId, currentYear: this.currentYear },
+    });
   }
 
   private loadFixtures(): void {
     zip(
-      this.fixtureService.getFixtureTeam(this.leagueId, this.teamId, this.currentYear),
+      this.fixtureService.getFixtureTeam(
+        this.leagueId,
+        this.teamId,
+        this.currentYear
+      ),
       this.teamService.getTeam(this.teamId)
     )
-    .pipe(
-      takeUntil(this.ngUnsubscribe),
-      shareReplay()
-    ).subscribe(([fixtures, team]) => {
-      this.fixtures = fixtures;
-      this.team = team[0];
-      this.countries = JSON.parse(this.secureStorageService.getData(COUNTRY_KEY));
-    });
+      .pipe(takeUntil(this.ngUnsubscribe), shareReplay())
+      .subscribe(([fixtures, team]) => {
+        this.fixtures = fixtures;
+        this.team = team[0];
+        this.countries = JSON.parse(
+          this.secureStorageService.getData(COUNTRY_KEY)
+        );
+      });
   }
-
 }
-
