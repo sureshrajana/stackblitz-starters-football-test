@@ -1,0 +1,16 @@
+<h2 class="header-text">FOOTBALL-UPDATES</h2>
+<div class="header__button-container">
+  <div
+    class="header__button"
+    *ngFor="let country of countries"
+    role="button"
+    aria-disabled="true"
+    (keyup)="selectCountry(country)"
+    (click)="selectCountry(country)"
+    role="button"
+  >
+    <span class="header__button-label" [ngClass]="isSelectedCountry(country)">{{
+      country.name
+    }}</span>
+  </div>
+</div>
