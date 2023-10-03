@@ -69,43 +69,14 @@ export class HomeContainerComponent implements OnInit, OnDestroy {
     this.loadLeague();
   }
 
-  // private loadLeague(): void {
-  //   this.leagueService
-  //     .getLeague(this.leagueId)
-  //     .pipe(
-  //       catchError((error) => {
-  //         console.error('Error loading league:', error);
-  //         // Handle the error as needed, e.g., show a message to the user.
-  //         return of('api limit is reached'); // Return a safe value in case of an error.
-  //       }),
-  //       concatMap((leagueInfo) => {
-  //         if (leagueInfo && leagueInfo[0] && leagueInfo[0].seasons && leagueInfo[0].seasons[0]) {
-  //         this.currentYear = `${leagueInfo[0].seasons[0].year}`;
-  //         return this.standingsService.getStandingsLeague(
-  //           this.leagueId,
-  //           this.currentYear
-  //         );
-  //         }
-  //       }),
-  //       shareReplay(),
-  //       takeUntil(this.ngUnsubscribe)
-  //     )
-  //     .subscribe((standings) => {
-  //       const league = standings[0].league;
-  //       this.countrySelected = league.country;
-  //       this.standings = league.standings[0];
-  //       this.showStandings = true;
-  //     });
-  // }
-
+  
   private loadLeague(): void {
     this.leagueService
       .getLeague(this.leagueId)
       .pipe(
         catchError((error) => {
           console.error('Error loading league:', error);
-          // Handle the error as needed, e.g., show a message to the user.
-          return of(null); // Return a safe value in case of an error.
+          return of(null); 
         }),
         concatMap((leagueInfo) => {
           if (
@@ -120,9 +91,8 @@ export class HomeContainerComponent implements OnInit, OnDestroy {
               this.currentYear
             );
           } else {
-            // Handle the case where the response is not as expected.
             console.error(' API request limit has been exceeded');
-            return of(null); // Return a safe value in case of invalid data.
+            return of(null); 
           }
         }),
         shareReplay(),
@@ -135,9 +105,7 @@ export class HomeContainerComponent implements OnInit, OnDestroy {
           this.standings = league.standings[0];
           this.showStandings = true;
         } else {
-          // Handle the case where the standings data is not as expected.
           console.error('API request limit has been exceeded');
-          // You may want to reset some variables or show an error message here.
         }
       });
   }
