@@ -2,15 +2,13 @@ import { Injectable } from '@angular/core';
 import { TeamServiceModule } from './team.service.module';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, map, shareReplay } from 'rxjs';
-import { ApiTeamResponse, TeamData } from '../../models/team.model';
-import { API_KEY, API_URL } from '../../constants/url.constant';
-
+import { TeamData, ApiTeamResponse } from '../../models';
+import { API_URL, API_KEY } from '../../constants';
 @Injectable({
-  providedIn: TeamServiceModule
+  providedIn: TeamServiceModule,
 })
 export class TeamService {
-
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   getTeam(teamId: number): Observable<TeamData[]> {
     const url = API_URL + `/teams?id=${teamId}`;
@@ -19,9 +17,8 @@ export class TeamService {
         'x-apisports-key': API_KEY,
       }),
     };
-    return this.http.get<ApiTeamResponse>(url, HEADER_OPTIONS)
-    .pipe(
-      map(data => data.response),
+    return this.http.get<ApiTeamResponse>(url, HEADER_OPTIONS).pipe(
+      map((data) => data.response),
       shareReplay()
     );
   }

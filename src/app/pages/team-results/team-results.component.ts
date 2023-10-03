@@ -1,14 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, shareReplay, takeUntil, zip } from 'rxjs';
+import { FixtureService, SecureStorageService, TeamService } from '../../services';
 import { Fixture } from '../../models/fixture.model';
-import { TeamData } from '../../models/team.model';
-import { Country } from '../../models/country.model';
-import { COUNTRY_VALUE} from '../../constants/country.constant';
-import { FixtureService } from '../../services/fixture/fixture.service';
-import { SecureStorageService } from '../../services/secure-storage/secure-storage.service';
-import { TeamService } from '../../services/team/team.service';
-
+import { Country, TeamData } from '../../models';
+import { COUNTRY_KEY } from '../../constants';
 
 @Component({
   selector: 'app-team-results',
@@ -66,7 +62,7 @@ export class TeamResultsComponent implements OnInit, OnDestroy {
     ).subscribe(([fixtures, team]) => {
       this.fixtures = fixtures;
       this.team = team[0];
-      this.countries = JSON.parse(this.secureStorageService.getData(COUNTRY_VALUE));
+      this.countries = JSON.parse(this.secureStorageService.getData(COUNTRY_KEY));
     });
   }
 
