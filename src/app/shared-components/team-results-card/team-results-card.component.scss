@@ -1,4 +1,4 @@
-.team-results-card {
+.team-list-results {
   align-items: center;
   border-collapse: collapse;
   display: flex;
@@ -16,16 +16,16 @@
     margin: auto;
     width: 100%;
     tbody td {
-      &.size1 {
+      &.list-tb-1 {
         width: 50px;
       }
-      &.size2 {
+      &.list-tb-2 {
         width: 100px;
       }
-      &.size3 {
+      &.list-tb-3 {
         width: 150px;
       }
-      &.size4 {
+      &.list-tb-4 {
         width: 200px;
       }
     }
